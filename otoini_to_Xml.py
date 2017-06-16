@@ -28,7 +28,7 @@ for line in otofile.readlines():
             xmlfile.write("<StartTime>"+line.split(",")[3]+"</StartTime>\n")
             xmlfile.write("<FixedRange>\n<Length>"+line.split(",")[4]+"</Length>\n")
             xmlfile.write("<Overlap>"+line.split(",")[6].rstrip()+"</Overlap>\n")
-            xmlfile.write("<Preceding>"+line.split(",")[5]+"</Preceding></FixedRange>\n")
+            xmlfile.write("<Preceding>"+line.split(",")[5]+"</Preceding>\n</FixedRange>\n</Fragment>\n")
         else:
             pass
 
