@@ -1,10 +1,12 @@
 # coding=UTF-8
 otofile = open("oto.ini", "r")
+xmlfile = open("oto.xml", "w")
 
 #xml 開始
-xmlfile = open("oto.xml", "w")
 xmlfile.write("<VoiceDictionary version=\"0.1\">\n")
-xmlfile.close()
+#Syllables 開始
+xmlfile.write("<Syllables>\n")
+
 
 for line in otofile.readlines():
     #拿掉 ";" 開頭的註解
@@ -16,11 +18,34 @@ for line in otofile.readlines():
         if line.split():
             line = line.replace("=",",")
             line.rstrip()
-            print line.split(",")[0]
-            print line.split(",")[1]
-            print line.split(",")[6]
-            xmlfile = open("/home/goescat/oto.xml", "a")
+            xmlfile = open("oto.xml", "a")
             #xmlfile.write(line)
+            phonemes = line.split(",")[0].split(".")
+            xmlfile.write("<Syllable alias=\""+line.split(",")[1]+"\">\n")
+            xmlfile.write("<Phonemes>"+phonemes[0].lower()+"</Phonemes>\n</Syllable>\n")
+        else:
+            pass
+
+xmlfile.close
+otofile.close
+
+xmlfile = open("oto.xml", "a")
+
+#Syllables 結束，Fragments 開始
+xmlfile.write("</Syllables>\n<Fragments>\n")
+xmlfile.close
+
+otofile = open("oto.ini", "r")
+
+for line in otofile.readlines():
+    ch = line[0]
+    if ch == ";":
+        pass
+    else:
+        if line.split():
+            line = line.replace("=",",")
+            line.rstrip()
+            xmlfile = open("oto.xml", "a")
             phonemes = line.split(",")[0].split(".")
             xmlfile.write("<Fragment phonemes=\""+phonemes[0].lower()+"\" pitch=\"F4\">\n")
             xmlfile.write("<FileName>"+line.split(",")[0]+"</FileName>\n")
@@ -37,5 +62,6 @@ xmlfile.close()
 
 #xml 結束
 xmlfile = open("oto.xml", "a")
+xmlfile.write("</Fragments>\n")
 xmlfile.write("</VoiceDictionary>")
 xmlfile.close()
